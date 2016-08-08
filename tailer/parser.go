@@ -1,7 +1,6 @@
 package tailer
 
 import (
-	"fmt"
 	"regexp"
 	"strconv"
 	"time"
@@ -21,16 +20,14 @@ func ReadLog(logFile string, eventChan chan ts.RawEvent, logDumpChan chan string
 		ReOpen:    true,
 		MustExist: true,
 		Location:  &seek,
+		Logger:    tail.DiscardingLogger,
 	})
 
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 
-	fmt.Println("runnign tailing")
 	for line := range t.Lines {
-		//fmt.Println(line.Err)
 		match := commonRegex.FindStringSubmatch(line.Text)
 
 		if len(match) == 0 {

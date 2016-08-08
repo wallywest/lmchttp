@@ -14,6 +14,14 @@ type Counter struct {
 	count int
 }
 
+func (c *Counter) Name() string {
+	return c.name
+}
+
+func (c *Counter) Count() int {
+	return c.count
+}
+
 type ByCount []Counter
 
 func (a ByCount) Len() int           { return len(a) }
@@ -26,6 +34,10 @@ type Bucket struct {
 	bytes     int64
 	hits      int
 	timestamp time.Time
+}
+
+func (b *Bucket) Section() []Counter {
+	return b.section
 }
 
 type TimeSeries []*Bucket
@@ -80,7 +92,7 @@ type RawEvent struct {
 	Bytes int64
 }
 
-func CollectBuckets(buckets TimeSeries, refreshInterval time.Duration, alertThreshold int, eventChan chan RawEvent) {
+func CollectBuckets(buckets TimeSeries, refreshInterval time.Duration, alertThreshold int, eventChan chan RawEvent, cuiChan chan TimeSeries, alertChan chan string) {
 	events := make([]*RawEvent, 0)
 	refreshTimer := time.Tick(refreshInterval)
 
@@ -90,14 +102,8 @@ func CollectBuckets(buckets TimeSeries, refreshInterval time.Duration, alertThre
 			events = append(events, &event)
 		case <-refreshTimer:
 
-			//_ip := make(map[string]int)
-			//_section := make(map[string]int)
-
 			ipCounters := map[string]Counter{}
 			sectionCounters := map[string]Counter{}
-
-			//ipCounters := make([]Counter, 0)
-			//sectionCounters := make([]Counter, 0)
 
 			var bytes int64 = 0
 			var hits int = 0
@@ -147,37 +153,58 @@ func CollectBuckets(buckets TimeSeries, refreshInterval time.Duration, alertThre
 			//this is a race conditions
 			buckets = append(buckets, &Bucket{list, sList, bytes, hits, timestamp})
 
+			//fmt.Println(buckets)
+			go checkThreshold(buckets, alertThreshold, alertChan)
+			//go printDebug(buckets)
+
+			cuiChan <- buckets
 			//something to draw the updated stats
 
 			//alert on number of threshold hits
-
 			//monitorHits
-			go checkThreshold(buckets, alertThreshold)
 		}
 	}
 }
 
 var alert_fail_state = false
 
-func checkThreshold(buckets TimeSeries, threshold int) {
-	avg := buckets.AverageHits(6)
+func printDebug(timeseries TimeSeries) {
+	message := ""
+
+	message += fmt.Sprint(" Avg Hits: ", timeseries.AverageHits(12))
+	message += fmt.Sprint("  Avg Bytes: ", timeseries.AverageBytes(12))
+	message += fmt.Sprint(" Total Hits: ", timeseries.TotalHits())
+	message += fmt.Sprint("  Total Bytes: ", timeseries.TotalBytes())
+
+	fmt.Println(message)
+
+	sectionMessage := ""
+	for _, counter := range timeseries.LastBucket().Section() {
+		sectionMessage += fmt.Sprint(" /", counter.Name(), " : ", strconv.Itoa(counter.Count()), "\n")
+	}
+
+	fmt.Println(sectionMessage)
+}
+
+func checkThreshold(buckets TimeSeries, threshold int, alertChan chan string) {
+	avg := buckets.AverageHits(12)
 
 	if avg > threshold {
 		if !alert_fail_state {
 			alert_fail_state = true
-			message := []string{"avg hits- ", strconv.Itoa(avg), " in last 2m exceeded alert_threshold of ", strconv.Itoa(threshold), " at ", time.Now().Local().String()}
-			fmt.Println(message)
+			message := []string{"avg hits - ", strconv.Itoa(avg), " in last 2m exceeded Alert Treshold of ", strconv.Itoa(threshold), " at ", time.Now().Local().String()}
+			alertChan <- strings.Join(message, "")
 		}
 
 		if alert_fail_state {
-			message := []string{"avg hits- ", strconv.Itoa(avg), " in last 2m exceeded alert_threshold of ", strconv.Itoa(threshold), " at ", time.Now().Local().String()}
-			fmt.Println(message)
+			message := []string{"avg hits - ", strconv.Itoa(avg), " in last 2m exceeded Alert Threshold of ", strconv.Itoa(threshold), " at ", time.Now().Local().String()}
+			alertChan <- strings.Join(message, "")
 		}
 	}
 
 	if avg < threshold && alert_fail_state {
 		alert_fail_state = false
-		message := []string{"avg hits- ", strconv.Itoa(avg), " in last 2m below alert_threshold of ", strconv.Itoa(threshold), " at ", time.Now().Local().String()}
-		fmt.Println(message)
+		message := []string{"avg hits - ", strconv.Itoa(avg), " in last 2m are below Alert Treshold of ", strconv.Itoa(threshold), " at ", time.Now().Local().String()}
+		alertChan <- strings.Join(message, "")
 	}
 }

@@ -8,18 +8,17 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/jroimartin/gocui"
+	"github.com/wallywest/lmchttp/cui"
 	"github.com/wallywest/lmchttp/tailer"
 	"github.com/wallywest/lmchttp/ts"
 )
 
 func main() {
-	//gui initialization
-
-	//logChan := make(chan RawLogEvent)
-
 	logFile := flag.String("log-file", "", "path to the log file to process")
 	refreshInterval := flag.String("refresh-interval", "10s", "default refresh interval")
 	alertThreshold := flag.Int("alert-threshold", 100, "hit threshold to trigger a warning")
+	debug := flag.Bool("debug", false, "enter debug mode which doesnt display a gui")
 
 	flag.Parse()
 
@@ -38,9 +37,11 @@ func main() {
 
 	eventChan := make(chan ts.RawEvent)
 	logDumpChan := make(chan string)
+	cuiChan := make(chan ts.TimeSeries)
+	alertChan := make(chan string)
 	quitChan := make(chan bool)
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
 	go func() {
 		err := tailer.ReadLog(*logFile, eventChan, logDumpChan)
@@ -51,14 +52,25 @@ func main() {
 		fmt.Println("finished")
 	}()
 
-	go ts.CollectBuckets(buckets, duration, *alertThreshold, eventChan)
+	go ts.CollectBuckets(buckets, duration, *alertThreshold, eventChan, cuiChan, alertChan)
 
-	go func() {
-		sig := <-sigs
-		fmt.Println(sig)
-		quitChan <- true
-	}()
+	if *debug {
+		go func() {
+			sigs := <-sigChan
+			fmt.Println(sigs)
+			quitChan <- true
+		}()
+	} else {
+		go func() {
+			gui := cui.New(cuiChan, logDumpChan, alertChan)
+
+			err := gui.MainLoop()
+			if err != nil && err == gocui.ErrQuit {
+				gui.Close()
+				quitChan <- true
+			}
+		}()
+	}
 
 	<-quitChan
-	fmt.Println("exiting")
 }

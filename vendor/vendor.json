@@ -33,23 +33,37 @@
 			"revisionTime": "2016-04-28T00:30:50Z"
 		},
 		{
-			"checksumSHA1": "8fD/im5Kwvy3JgmxulDTambmE8w=",
-			"path": "golang.org/x/sys/unix",
-			"revision": "a646d33e2ee3172a661fc09bca23bb4889a41bc8",
-			"revisionTime": "2016-07-15T05:43:45Z"
+			"checksumSHA1": "ns8HbIxU9YQazsgvr6y8PxBnU6k=",
+			"path": "github.com/jroimartin/gocui",
+			"revision": "aa556cf13539b3ccee4af63bf73daca9dc43b216",
+			"revisionTime": "2016-07-31T14:47:00Z"
 		},
 		{
-			"checksumSHA1": "93uHIq25lffEKY47PV8dBPD+XuQ=",
+			"checksumSHA1": "DdH3xAkzAWJ4B/LGYJyCeRsly2I=",
+			"path": "github.com/mattn/go-runewidth",
+			"revision": "d6bea18f789704b5f83375793155289da36a3c7f",
+			"revisionTime": "2016-03-15T04:07:12Z"
+		},
+		{
+			"checksumSHA1": "bcgbmZhNRsfsLgd8obtn7yIey6I=",
+			"path": "github.com/nsf/termbox-go",
+			"revision": "e8f6d27f72a2f2bb598eb3579afd5ea364ef67f7",
+			"revisionTime": "2016-08-08T04:50:38Z"
+		},
+		{
+			"checksumSHA1": "mFhvo8ZlZg1Y1wxet9ndm6JQkJQ=",
+			"origin": "github.com/hpcloud/tail/vendor/gopkg.in/fsnotify.v1",
 			"path": "gopkg.in/fsnotify.v1",
-			"revision": "a8a77c9133d2d6fd8334f3260d06f60e8d80a5fb",
-			"revisionTime": "2016-06-29T01:11:04Z"
+			"revision": "a30252cb686a21eb2d0b98132633053ec2f7f1e5",
+			"revisionTime": "2016-04-28T00:30:50Z"
 		},
 		{
-			"checksumSHA1": "TO8baX+t1Qs7EmOYth80MkbKzFo=",
+			"checksumSHA1": "z56sI90RWCJhiiLlOExjEARbj7I=",
+			"origin": "github.com/hpcloud/tail/vendor/gopkg.in/tomb.v1",
 			"path": "gopkg.in/tomb.v1",
-			"revision": "dd632973f1e7218eb1089048e0798ec9ae7dceb8",
-			"revisionTime": "2014-10-24T13:56:13Z"
+			"revision": "a30252cb686a21eb2d0b98132633053ec2f7f1e5",
+			"revisionTime": "2016-04-28T00:30:50Z"
 		}
 	],
-	"rootPath": "github.com/lmchttp"
+	"rootPath": "github.com/wallywest/lmchttp"
 }
