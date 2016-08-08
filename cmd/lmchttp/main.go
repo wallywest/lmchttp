@@ -49,7 +49,6 @@ func main() {
 			fmt.Println(err)
 			quitChan <- true
 		}
-		fmt.Println("finished")
 	}()
 
 	go ts.CollectBuckets(buckets, duration, *alertThreshold, eventChan, cuiChan, alertChan)
