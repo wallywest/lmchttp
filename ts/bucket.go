@@ -200,7 +200,7 @@ func checkThreshold(buckets TimeSeries, threshold int, alertChan chan string) {
 
 	if avg < threshold && alert_fail_state {
 		alert_fail_state = false
-		message := []string{"avg hits - ", strconv.Itoa(avg), " in last 2m are below Alert Treshold of ", strconv.Itoa(threshold), " at ", time.Now().Local().String()}
+		message := []string{"avg hits - ", strconv.Itoa(avg), " in last 2m are below Alert Threshold of ", strconv.Itoa(threshold), " at ", time.Now().Local().String()}
 		alertChan <- strings.Join(message, "")
 		return
 	}
