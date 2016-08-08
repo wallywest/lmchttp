@@ -42,10 +42,10 @@ make build
 
 ## Future Improvements
 
-The consol ui could be improved big time
-The code in general could be refactored in several places where there are possible data races.
-More accurate calculation of average with EWMA.
-Different type of alerts with different thresholds like status code alerts.
-Average is a bad metric in general, a histogram would be useful to show.
-Better data caching
-Separating the UI from the daemon process running
+* The consol ui could be improved big time
+* The code in general could be refactored in several places where there are possible data races.
+* More accurate calculation of average with EWMA.
+* Different type of alerts with different thresholds like status code alerts.
+* Average is a bad metric in general, a histogram would be useful to show.
+* Better data caching
+* Separating the UI from the daemon process running
