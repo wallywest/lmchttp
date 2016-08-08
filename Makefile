@@ -2,9 +2,10 @@ BUILD_PATH=github.com/wallywest/lmchttp/cmd/lmchttp
 
 setup:
 	@go get -u github.com/kardianos/govendor
+	@govendor init
 
 deps:
-	@govendor add +external
+	@govendor fetch +out
 	@govendor update +vendor
 
 test:

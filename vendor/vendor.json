@@ -4,30 +4,35 @@
 	"package": [
 		{
 			"checksumSHA1": "arojRtqOmOlvVF+Bo4mv05dF/wc=",
+			"origin": "github.com/wallywest/lmchttp/vendor/github.com/hpcloud/tail",
 			"path": "github.com/hpcloud/tail",
 			"revision": "a30252cb686a21eb2d0b98132633053ec2f7f1e5",
 			"revisionTime": "2016-04-28T00:30:50Z"
 		},
 		{
 			"checksumSHA1": "JQP5xDlFbFT+PZT8Yk70J5tchUE=",
+			"origin": "github.com/wallywest/lmchttp/vendor/github.com/hpcloud/tail/ratelimiter",
 			"path": "github.com/hpcloud/tail/ratelimiter",
 			"revision": "a30252cb686a21eb2d0b98132633053ec2f7f1e5",
 			"revisionTime": "2016-04-28T00:30:50Z"
 		},
 		{
 			"checksumSHA1": "0xM336Lb25URO/1W1/CtGoRygVU=",
+			"origin": "github.com/wallywest/lmchttp/vendor/github.com/hpcloud/tail/util",
 			"path": "github.com/hpcloud/tail/util",
 			"revision": "a30252cb686a21eb2d0b98132633053ec2f7f1e5",
 			"revisionTime": "2016-04-28T00:30:50Z"
 		},
 		{
 			"checksumSHA1": "mPYzD3FBUUDZEtVGJpOv1+Uf5ss=",
+			"origin": "github.com/wallywest/lmchttp/vendor/github.com/hpcloud/tail/watch",
 			"path": "github.com/hpcloud/tail/watch",
 			"revision": "a30252cb686a21eb2d0b98132633053ec2f7f1e5",
 			"revisionTime": "2016-04-28T00:30:50Z"
 		},
 		{
 			"checksumSHA1": "j65V4wnJboT4pfppNC/gjr2Gl+c=",
+			"origin": "github.com/wallywest/lmchttp/vendor/github.com/hpcloud/tail/winfile",
 			"path": "github.com/hpcloud/tail/winfile",
 			"revision": "a30252cb686a21eb2d0b98132633053ec2f7f1e5",
 			"revisionTime": "2016-04-28T00:30:50Z"
