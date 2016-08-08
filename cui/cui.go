@@ -87,7 +87,7 @@ func layout(g *gocui.Gui) error {
 		return err
 	} else {
 		time_view.Frame = true
-		options := fmt.Sprint(" Refresh Interval: 2s  Alert Threshold: 100  Log File: access_log")
+		options := fmt.Sprint(" Refresh Interval: 10s  Alert Threshold: 100  Log File: access_log")
 		fmt.Fprintln(time_view, options)
 	}
 
